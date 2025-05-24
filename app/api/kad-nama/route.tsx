@@ -89,7 +89,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
                     textAlign: 'center',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    // textShadow: alternateSet[alternateQuery].dropShadow ? '4px 4px 16px rgba(0, 0, 0, 0.5)' : 'none',
                 }}
             >
                 <div style={{ fontFamily: fontDesigns[fontDesign].fontFamily, fontSize: 120, display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: .9 }}>
