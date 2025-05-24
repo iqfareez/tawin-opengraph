@@ -25,8 +25,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const bgDesign = (parseInt(searchParams.get('bg') ?? '1', 10)) - 1;
     const fontDesign = (parseInt(searchParams.get('font') ?? '1', 10)) - 1;
 
-
-
     // Define bg designs and suitable foreground colors
     const bgDesigns = [
         {
@@ -109,13 +107,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
                     name: 'Birthstone',
                     data: await loadGoogleFont('Birthstone', text),
                     style: 'normal',
-
                 },
                 {
                     name: 'Great Vibes',
                     data: await loadGoogleFont('Great Vibes', text),
                     style: 'normal',
-
                 },
             ]
         },
