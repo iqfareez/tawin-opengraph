@@ -17,6 +17,12 @@ export default function Home() {
   })
 
   const [ogUrl, setOgUrl] = useState<string>("")
+  const [fileSize, setFileSize] = useState<number | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     const url = new URL("/api/kad-nama", window.location.origin)
@@ -26,6 +32,26 @@ export default function Home() {
     setOgUrl(url.toString())
   }, [params])
 
+  useEffect(() => {
+    const fetchFileSize = async () => {
+      if (!ogUrl) {
+        setFileSize(null)
+        return
+      }
+
+      try {
+        const response = await fetch(ogUrl)
+        const blob = await response.blob()
+        setFileSize(blob.size)
+      } catch (error) {
+        console.error('Failed to fetch file size:', error)
+        setFileSize(null)
+      }
+    }
+
+    fetchFileSize()
+  }, [ogUrl])
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setParams((prev) => ({ ...prev, [name]: value }))
@@ -33,6 +59,12 @@ export default function Home() {
 
   const handleSelectChange = (name: string, value: string) => {
     setParams((prev) => ({ ...prev, [name]: Number.parseInt(value) }))
+  }
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
   return (
@@ -110,7 +142,17 @@ export default function Home() {
         </div>
         <Card className="mt-4">
           <CardHeader>
-            <CardTitle>Preview</CardTitle>
+            <CardTitle>
+              Preview
+              {isMounted && fileSize !== null && (
+                // If file size more than 600KB, show in red. According to Meta docs, WhatsApp refuse to display meta image
+                // if the file size is more than 600KB. 
+                // See https://developers.facebook.com/docs/whatsapp/link-previews/
+                <span className={`ml-2 font-medium font-mono text-sm ${fileSize > 600 * 1024 ? 'text-red-500' : ''}`}>
+                  ({formatFileSize(fileSize)})
+                </span>
+              )}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="relative w-full aspect-[1200/630]">
