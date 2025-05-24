@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuranTajwid OpenGraph",
-  description: "OpenGraph images generator for QuranTajwid Apps",
+  title: "Kad Kahwin OpenGraph",
+  description: "OpenGraph images generator for Tawin.my. Or any related services.",
 };
 
 export default function RootLayout({
